@@ -1,0 +1,30 @@
+name: 'Pull request verification'
+
+on:
+  pull_request:
+    branches:
+      - trunk
+
+permissions:
+  pull-requests: write
+
+jobs:
+  arm-softmmu:
+    name: 'Build QEMU for arm-softmmu only'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    permissions:
+      pull-requests: write
+    steps:
+      - name: 'Install dependencies'
+        run: sudo apt install -y git libglib2.0-dev libfdt-dev libpixman-1-dev zlib1g-dev ninja-build
+      - name: 'Setup'
+        run: mkdir -p build
+      - name: 'Configure'
+        working-directory: build
+        run: ../configure --target-list=arm-softmmu
+      - name: 'Build'
+        working-directory: build
+        run: make
