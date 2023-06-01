@@ -2,11 +2,7 @@ name: 'Pull request verification'
 
 on:
   pull_request:
-    branches:
-      - trunk
-
-permissions:
-  pull-requests: write
+    branches: [trunk]
 
 jobs:
   arm-softmmu:
@@ -15,9 +11,8 @@ jobs:
     defaults:
       run:
         shell: bash
-    permissions:
-      pull-requests: write
     steps:
+      - uses: actions/checkout@v3
       - name: 'Install dependencies'
         run: sudo apt install -y git libglib2.0-dev libfdt-dev libpixman-1-dev zlib1g-dev ninja-build
       - name: 'Setup'
